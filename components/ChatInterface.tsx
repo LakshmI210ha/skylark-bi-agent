@@ -189,7 +189,7 @@ All figures are strictly computed from live data with zero hallucination. Click 
   };
 
   return (
-    <div className="flex flex-col h-[750px] glass-card overflow-hidden border border-slate-800 bg-[#0E1526]/95 shadow-xl rounded-2xl">
+    <div className="flex flex-col h-[calc(100vh-220px)] min-h-[600px] max-h-[750px] glass-card overflow-hidden border border-slate-800 bg-[#0E1526]/95 shadow-xl rounded-2xl">
       {/* AI Assistant Header */}
       <div className="p-3.5 px-4 border-b border-slate-800 bg-[#0A0F1E] flex items-center justify-between">
         <div className="flex items-center gap-3">
