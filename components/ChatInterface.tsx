@@ -95,12 +95,17 @@ All figures are strictly computed from live data with zero hallucination. Click 
 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   };
-
   useEffect(() => {
     scrollToBottom();
   }, [messages, loading]);
@@ -154,9 +159,8 @@ All figures are strictly computed from live data with zero hallucination. Click 
       const errorMessage: ChatMessage = {
         id: `msg_err_${Date.now()}`,
         role: 'assistant',
-        content: `⚠️ **Error Processing Query:**\n\n${
-          err?.message || 'Could not fetch live Monday.com insights.'
-        }\n\n*Please ensure \`MONDAY_API_TOKEN\` and board IDs are set in \`.env.local\`.*`,
+        content: `⚠️ **Error Processing Query:**\n\n${err?.message || 'Could not fetch live Monday.com insights.'
+          }\n\n*Please ensure \`MONDAY_API_TOKEN\` and board IDs are set in \`.env.local\`.*`,
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -250,7 +254,10 @@ All figures are strictly computed from live data with zero hallucination. Click 
       </div>
 
       {/* Message Stream */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-4">
+      <div
+        ref={messagesContainerRef}
+        className="flex-1 min-h-0 overflow-y-auto p-4 md:p-5 space-y-4"
+      >
         {messages.map((msg) => (
           <MessageBubble
             key={msg.id}
@@ -278,7 +285,6 @@ All figures are strictly computed from live data with zero hallucination. Click 
           </div>
         )}
 
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Composer */}
