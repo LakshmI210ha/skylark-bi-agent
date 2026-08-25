@@ -186,7 +186,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Right ~35%: AI Executive Assistant */}
-          <div className="lg:col-span-5 xl:col-span-4 flex flex-col">
+          <div className="lg:col-span-5 xl:col-span-4 flex flex-col lg:sticky lg:top-4 lg:self-start lg:h-[calc(100vh-120px)]">
             <ChatInterface
               analytics={analytics}
               filters={filters}
