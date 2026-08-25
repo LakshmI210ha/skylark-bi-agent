@@ -1,7 +1,7 @@
 // components/ChatInterface.tsx
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   Send,
   Sparkles,
@@ -97,13 +97,13 @@ All figures are strictly computed from live data with zero hallucination. Click 
   const [loading, setLoading] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = messagesContainerRef.current;
-
     if (!container) return;
 
-    requestAnimationFrame(() => {
-      container.scrollTop = container.scrollHeight;
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: 'auto',
     });
   }, [messages, loading]);
   const handleSendMessage = async (textToSend?: string) => {
@@ -252,7 +252,7 @@ All figures are strictly computed from live data with zero hallucination. Click 
       {/* Message Stream */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 md:p-5 space-y-4"
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain overflow-anchor-none p-4 md:p-5 space-y-4"
       >
         {messages.map((msg) => (
           <MessageBubble
