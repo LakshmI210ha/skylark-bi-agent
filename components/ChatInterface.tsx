@@ -97,19 +97,15 @@ All figures are strictly computed from live data with zero hallucination. Click 
   const [loading, setLoading] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    const container = messagesContainerRef.current;
-    if (container) {
-      container.scrollTo({
-        top: container.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
-  };
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, loading]);
+    const container = messagesContainerRef.current;
 
+    if (!container) return;
+
+    requestAnimationFrame(() => {
+      container.scrollTop = container.scrollHeight;
+    });
+  }, [messages, loading]);
   const handleSendMessage = async (textToSend?: string) => {
     const query = (textToSend || input).trim();
     if (!query || loading) return;
@@ -256,7 +252,7 @@ All figures are strictly computed from live data with zero hallucination. Click 
       {/* Message Stream */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 min-h-0 overflow-y-auto p-4 md:p-5 space-y-4"
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 md:p-5 space-y-4"
       >
         {messages.map((msg) => (
           <MessageBubble
@@ -269,7 +265,7 @@ All figures are strictly computed from live data with zero hallucination. Click 
         {/* Thinking Spinner */}
         {loading && (
           <div className="flex items-center gap-3 my-3">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+            <div className="w-8 h-8 rounded-xl bg-blue-600/20 borde border-blue-500/30 flex items-center justify-center text-blue-400">
               <Bot className="w-4 h-4 animate-pulse" />
             </div>
             <div className="glass-card px-4 py-3 rounded-2xl rounded-tl-none border-slate-700/60 bg-[#0E1628]/95 text-xs text-slate-300 flex items-center gap-3 shadow-sm">
